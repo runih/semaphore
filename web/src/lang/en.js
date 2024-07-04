@@ -36,6 +36,8 @@ export default {
   youHaveReadonlyAccess: 'You have read-only access',
   taskTemplates: 'Task Templates',
   inventory: 'Inventory',
+  runners: 'Runners',
+  runners2: 'Runners',
   environment: 'Environment',
   keyStore: 'Key Store',
   repositories: 'Repositories',

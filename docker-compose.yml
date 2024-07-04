@@ -1,0 +1,58 @@
+networks:
+  semaphore-network:
+    external: false
+    name: semaphore-network
+services:
+  postgres:
+    container_name: PostgreSQL
+    image: postgres:15-alpine
+    networks:
+      - semaphore-network
+    ports:
+      - 35432:5432
+    volumes:
+      - /Users/runi.hansen/DB/Semaphore/postgreSQL:/var/lib/postgresql/data
+    environment:
+      TZ: Europe/Stockholm
+      POSTGRES_PASSWORD: Fortnox1
+      POSTGRES_USER: admin
+      POSTGRES_DB: semaphore
+
+  #  semaphore:
+  #    container_name: semaphore
+  #    ports:
+  #      - 3000:3000
+  #    image: semaphoreui/semaphore:latest
+  #    environment:
+  #      SEMAPHORE_DB_DIALECT: postgres
+  #      SEMAPHORE_DB_HOST: PostgreSQL
+  #      SEMAPHORE_DB_USER: admin
+  #      SEMAPHORE_DB_PASS: Fortnox1
+  #      SEMAPHORE_DB_PORT: 5432
+  #      #SEMAPHORE_PLAYBOOK_PATH: somewhere
+  #      SEMAPHORE_DB: semaphore
+  #      SEMAPHORE_ADMIN_PASSWORD: Fortnox1
+  #      SEMAPHORE_ADMIN_NAME: admin
+  #      SEMAPHORE_ADMIN_EMAIL: runi.hansen@fortnox.se
+  #      SEMAPHORE_ADMIN: admin
+  #      SEMAPHORE_ACCESS_KEY_ENCRYPTION: gs72mPntFATGJs9qK0pQ0rKtfidlexiMjYCH9gWKhTU=
+  #      SEMAPHORE_RUNNER_REGISTRATION_TOKEN: Fortnox1
+  #      TZ: Europe/Stockholm
+  #    networks:
+  #      - semaphore-network
+  #    volumes:
+  #      - /Users/runi.hansen/DB/Semaphore/etc:/etc/semaphore # config.json location
+  #    depends_on:
+  #      - postgres
+  #
+  #  runner1:
+  #    container_name: runner1
+  #    image: semaphoreui/runner:latest
+  #    environment:
+  #      TZ: Europe/Stockholm
+  #    networks:
+  #      - semaphore-network
+  #    volumes:
+  #      - /Users/runi.hansen/DB/Semaphore/runners/runner1:/etc/semaphore # config.json location
+  #    depends_on:
+  #      - semaphore

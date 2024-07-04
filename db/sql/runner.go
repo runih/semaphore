@@ -9,8 +9,10 @@ import (
 )
 
 func (d *SqlDb) GetAllRunners() (runners []db.Runner, err error) {
-	query, args, err := squirrel.Select("r.*").
+	query, args, err := squirrel.Select("r.*, p.name as project_name, i.name as inventory_name").
 		From("runner as r").
+		LeftJoin("project as p ON p.id = r.project_id").
+		LeftJoin("project__inventory as i ON i.id = r.inventory_id").
 		OrderBy("r.id").
 		ToSql()
 
