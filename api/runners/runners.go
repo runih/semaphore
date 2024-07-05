@@ -69,6 +69,10 @@ func GetRunner(w http.ResponseWriter, r *http.Request) {
 			continue
 		}
 
+		if runner.InventoryId != nil && *runner.InventoryId != tsk.Inventory.ID {
+			continue
+		}
+
 		if tsk.Task.Status == task_logger.TaskStartingStatus {
 
 			data.NewJobs = append(data.NewJobs, runners.JobData{

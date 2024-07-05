@@ -95,7 +95,7 @@ func (t *RemoteJob) Run(username string, incomingVersion *string) (err error) {
 
 	for _, r := range runners {
 		n := t.taskPool.GetNumberOfRunningTasksOfRunner(r.ID)
-		if n < r.MaxParallelTasks {
+		if n < r.MaxParallelTasks && (r.InventoryId == nil || *r.InventoryId == tsk.Inventory.ID) {
 			runner = &r
 			break
 		}
