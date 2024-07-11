@@ -159,6 +159,9 @@ func (t *TaskRunner) run() {
 
 	if err != nil {
 		t.Log("Running app failed: " + err.Error())
+		t.Logf("Task Id: %d\n", t.Task.ID)
+		t.Logf("Task queues: %v\n", t.pool.queue)
+		t.Logf("Task Running: %v\n", t.pool.runningTasks)
 		t.SetStatus(task_logger.TaskFailStatus)
 		return
 	}
