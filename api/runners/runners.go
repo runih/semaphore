@@ -55,6 +55,24 @@ func RunnerMiddleware(next http.Handler) http.Handler {
 	})
 }
 
+func GetRunners(w http.ResponseWriter, r *http.Request) {
+
+	user := context.Get(r, "user").(*db.User)
+
+	var err error
+	var runners []db.Runner
+	if user.Admin {
+		runners, err = helpers.Store(r).GetAllRunners()
+	}
+	// TODO: Get runner for user
+
+	if err != nil {
+		helpers.WriteError(w, err)
+	}
+
+	helpers.WriteJSON(w, http.StatusOK, runners)
+}
+
 func GetRunner(w http.ResponseWriter, r *http.Request) {
 	runner := context.Get(r, "runner").(db.Runner)
 

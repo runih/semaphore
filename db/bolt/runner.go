@@ -5,6 +5,10 @@ import (
 	"github.com/ansible-semaphore/semaphore/util"
 )
 
+func (d *BoltDb) GetAllRunners() (runners []db.Runner, err error) {
+	return
+}
+
 func (d *BoltDb) GetRunner(projectID int, runnerID int) (runner db.Runner, err error) {
 	return
 }

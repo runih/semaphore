@@ -2,9 +2,25 @@ package sql
 
 import (
 	"encoding/base64"
+
+	"github.com/Masterminds/squirrel"
 	"github.com/ansible-semaphore/semaphore/db"
 	"github.com/gorilla/securecookie"
 )
+
+func (d *SqlDb) GetAllRunners() (runners []db.Runner, err error) {
+	query, args, err := squirrel.Select("r.*").
+		From("runner as r").
+		OrderBy("r.id").
+		ToSql()
+
+	if err != nil {
+		return
+	}
+
+	_, err = d.selectAll(&runners, query, args...)
+	return
+}
 
 func (d *SqlDb) GetRunner(projectID int, runnerID int) (runner db.Runner, err error) {
 	return

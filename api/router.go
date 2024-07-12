@@ -106,6 +106,7 @@ func Route() *mux.Router {
 
 	authenticatedAPI.Path("/info").HandlerFunc(getSystemInfo).Methods("GET", "HEAD")
 
+	authenticatedAPI.Path("/runners").HandlerFunc(runners.GetRunners).Methods("GET", "HEAD")
 	authenticatedAPI.Path("/projects").HandlerFunc(projects.GetProjects).Methods("GET", "HEAD")
 	authenticatedAPI.Path("/projects").HandlerFunc(projects.AddProject).Methods("POST")
 	authenticatedAPI.Path("/projects/restore").HandlerFunc(projects.Restore).Methods("POST")
