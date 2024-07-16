@@ -37,12 +37,6 @@
       <v-app-bar-nav-icon @click="showDrawer()"></v-app-bar-nav-icon>
       <v-toolbar-title>{{ $t('runners2') }}</v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn
-        color="primary"
-        @click="editItem('new')"
-        v-if="can(USER_PERMISSIONS.manageProjectResources)"
-      >{{ $t('newRunners') }}
-      </v-btn>
     </v-toolbar>
 
     <v-data-table
@@ -90,8 +84,8 @@ export default {
           value: 'id',
         },
         {
-          text: this.$i18n.t('token'),
-          value: 'token',
+          text: this.$i18n.t('name'),
+          value: 'name',
         },
         {
           text: this.$i18n.t('project_name'),
@@ -108,6 +102,11 @@ export default {
         {
           text: this.$i18n.t('max_parallel_tasks'),
           value: 'max_parallel_tasks',
+        },
+        {
+          text: this.$i18n.t('actions'),
+          value: 'actions',
+          sortable: false,
         },
       ];
     },

@@ -255,6 +255,11 @@ func Route() *mux.Router {
 	projectInventoryManagement.HandleFunc("/{inventory_id}", projects.UpdateInventory).Methods("PUT")
 	projectInventoryManagement.HandleFunc("/{inventory_id}", projects.RemoveInventory).Methods("DELETE")
 
+	projectRunnerManagment := projectUserAPI.PathPrefix("/runner").Subrouter()
+	projectRunnerManagment.Use(projects.RunnerMiddleware)
+
+	projectRunnerManagment.HandleFunc("/{runner_id}", projects.GetRunner).Methods("GET", "HEAD")
+
 	projectEnvManagement := projectUserAPI.PathPrefix("/environment").Subrouter()
 	projectEnvManagement.Use(projects.EnvironmentMiddleware)
 

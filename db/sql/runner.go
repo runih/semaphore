@@ -25,7 +25,22 @@ func (d *SqlDb) GetAllRunners() (runners []db.Runner, err error) {
 }
 
 func (d *SqlDb) GetRunner(projectID int, runnerID int) (runner db.Runner, err error) {
+	query, args, err := squirrel.Select("r.*, p.name as project_name, i.name as inventory_name").
+		From("runner as r").
+		LeftJoin("project as p ON p.id = r.project_id").
+		LeftJoin("project__inventory as i ON i.id = r.inventory_id").
+		Where("p.id = ? AND r.id = ?", projectID, runnerID).
+		OrderBy("r.id").
+		ToSql()
+
+	err = d.selectOne(&runner, query, args...)
+
+	if err != nil {
+		return
+	}
+
 	return
+
 }
 
 func (d *SqlDb) GetRunners(projectID int) (runners []db.Runner, err error) {
