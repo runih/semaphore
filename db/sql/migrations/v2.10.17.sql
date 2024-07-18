@@ -1,1 +1,2 @@
-ALTER TABLE runner ADD column IF NOT EXISTS inventory_id INT REFERENCES project__inventory(id) ON DELETE SET NULL;
+ALTER TABLE runner ADD COLUMN IF NOT EXISTS "name" TEXT;
+ALTER TABLE runner ADD COLUMN IF NOT EXISTS inventory_id INT REFERENCES project__inventory(id) ON DELETE SET NULL;

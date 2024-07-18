@@ -9,6 +9,7 @@ type RunnerState string
 
 type Runner struct {
 	ID            int     `db:"id" json:"id"`
+	Name          *string `db:"name" json:"name"`
 	Token         string  `db:"token" json:"token"`
 	ProjectID     *int    `db:"project_id" json:"project_id"`
 	ProjectName   *string `db:"project_name" json:"project_name"`

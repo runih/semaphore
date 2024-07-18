@@ -48,7 +48,7 @@ func (d *SqlDb) GetRunners(projectID int) (runners []db.Runner, err error) {
 }
 
 func (d *SqlDb) DeleteRunner(projectID int, runnerID int) (err error) {
-	return
+	return d.deleteObject(projectID, db.GlobalRunnerProps, runnerID)
 }
 
 func (d *SqlDb) GetGlobalRunner(runnerID int) (runner db.Runner, err error) {
@@ -68,7 +68,10 @@ func (d *SqlDb) DeleteGlobalRunner(runnerID int) (err error) {
 
 func (d *SqlDb) UpdateRunner(runner db.Runner) (err error) {
 	_, err = d.exec(
-		"update runner set webhook=?, max_parallel_tasks=? where id=?",
+		"update runner set name=?, project_id=?, inventory_id=?, webhook=?, max_parallel_tasks=? where id=?",
+		runner.Name,
+		runner.ProjectID,
+		runner.InventoryId,
 		runner.Webhook,
 		runner.MaxParallelTasks,
 		runner.ID)
@@ -81,8 +84,10 @@ func (d *SqlDb) CreateRunner(runner db.Runner) (newRunner db.Runner, err error) 
 
 	insertID, err := d.insert(
 		"id",
-		"insert into runner (project_id, token, webhook, max_parallel_tasks) values (?, ?, ?, ?)",
+		"insert into runner (name, project_id, inventory_id, token, webhook, max_parallel_tasks) values (?, ?, ?, ?, ?, ?)",
+		runner.Name,
 		runner.ProjectID,
+		runner.InventoryId,
 		token,
 		runner.Webhook,
 		runner.MaxParallelTasks)
