@@ -31,21 +31,21 @@ func RunnerMiddleware(next http.Handler) http.Handler {
 }
 
 func GetRunner(w http.ResponseWriter, r *http.Request) {
-	if repo := context.Get(r, "runner"); repo != nil {
-		helpers.WriteJSON(w, http.StatusOK, repo.(db.Runner))
+	if runner := context.Get(r, "runner"); runner != nil {
+		helpers.WriteJSON(w, http.StatusOK, runner.(db.Runner))
 		return
 	}
 
 	project := context.Get(r, "project").(db.Project)
 
-	repos, err := helpers.Store(r).GetRunners(project.ID)
+	runners, err := helpers.Store(r).GetRunners(project.ID, helpers.QueryParams(r.URL))
 
 	if err != nil {
 		helpers.WriteError(w, err)
 		return
 	}
 
-	helpers.WriteJSON(w, http.StatusOK, repos)
+	helpers.WriteJSON(w, http.StatusOK, runners)
 }
 
 func UpdateRunner(w http.ResponseWriter, r *http.Request) {

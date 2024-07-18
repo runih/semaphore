@@ -13,7 +13,7 @@ func (d *BoltDb) GetRunner(projectID int, runnerID int) (runner db.Runner, err e
 	return
 }
 
-func (d *BoltDb) GetRunners(projectID int) (runners []db.Runner, err error) {
+func (d *BoltDb) GetRunners(projectID int, params db.RetrieveQueryParams) (runners []db.Runner, err error) {
 	return
 }
 

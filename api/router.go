@@ -183,6 +183,8 @@ func Route() *mux.Router {
 	projectUserAPI.Path("/inventory").HandlerFunc(projects.GetInventory).Methods("GET", "HEAD")
 	projectUserAPI.Path("/inventory").HandlerFunc(projects.AddInventory).Methods("POST")
 
+	projectUserAPI.Path("/runner").HandlerFunc(projects.GetRunner).Methods("GET", "HEAD")
+
 	projectUserAPI.Path("/environment").HandlerFunc(projects.GetEnvironment).Methods("GET", "HEAD")
 	projectUserAPI.Path("/environment").HandlerFunc(projects.AddEnvironment).Methods("POST")
 

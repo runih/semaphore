@@ -111,7 +111,7 @@ export default {
       ];
     },
     getItemsUrl() {
-      return '/api/runners';
+      return `/api/project/${this.projectId}/runner`;
     },
     getSingleItemUrl() {
       return `/api/project/${this.projectId}/runners/${this.itemId}`;

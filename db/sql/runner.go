@@ -43,8 +43,10 @@ func (d *SqlDb) GetRunner(projectID int, runnerID int) (runner db.Runner, err er
 
 }
 
-func (d *SqlDb) GetRunners(projectID int) (runners []db.Runner, err error) {
-	return
+func (d *SqlDb) GetRunners(projectID int, params db.RetrieveQueryParams) ([]db.Runner, error) {
+	var runners []db.Runner
+	err := d.getObjects(projectID, db.GlobalRunnerProps, params, nil, &runners)
+	return runners, err
 }
 
 func (d *SqlDb) DeleteRunner(projectID int, runnerID int) (err error) {
