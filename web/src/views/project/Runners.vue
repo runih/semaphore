@@ -46,6 +46,12 @@
       class="mt-4"
       :items-per-page="Number.MAX_VALUE"
     >
+      <template v-slot:item.project_name="{ item }">
+        {{ (projects.find((x) => x.id === item.project_id) || {name: '-'}).name }}
+      </template>
+      <template v-slot:item.inventory_name="{ item }">
+        {{ (inventories.find((x) => x.id === item.inventory_id) || {name: '-'}).name }}
+      </template>
       <template v-slot:item.actions="{ item }">
         <div style="white-space: nowrap">
           <v-btn
@@ -72,10 +78,20 @@
 <script>
 import ItemListPageBase from '@/components/ItemListPageBase';
 import RunnersForm from '@/components/RunnersForm.vue';
+import axios from 'axios';
 
 export default {
   components: { RunnersForm },
   mixins: [ItemListPageBase],
+  data() {
+    return {
+      inventories: null,
+      projects: null,
+    };
+  },
+  async created() {
+    await this.loadData();
+  },
   methods: {
     getHeaders() {
       return [
@@ -118,6 +134,20 @@ export default {
     },
     getEventName() {
       return 'i-runners';
+    },
+    async loadData() {
+      [this.projects, this.inventories] = (await Promise.all([
+        await axios({
+          method: 'get',
+          url: '/api/projects',
+          responseType: 'json',
+        }),
+        await axios({
+          method: 'get',
+          url: `/api/project/${this.projectId}/inventory`,
+          responseType: 'json',
+        }),
+      ])).map((x) => x.data);
     },
   },
 };
