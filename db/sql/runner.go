@@ -29,7 +29,7 @@ func (d *SqlDb) GetRunner(projectID int, runnerID int) (runner db.Runner, err er
 		From("runner as r").
 		LeftJoin("project as p ON p.id = r.project_id").
 		LeftJoin("project__inventory as i ON i.id = r.inventory_id").
-		Where("p.id = ? AND r.id = ?", projectID, runnerID).
+		Where("r.id = ?", runnerID).
 		OrderBy("r.id").
 		ToSql()
 
