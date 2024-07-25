@@ -165,7 +165,6 @@ export default {
           responseType: 'json',
           data: {
             ...this.item,
-            project_id: this.projectId,
             ...data,
           },
           ...(this.getRequestOptions()),

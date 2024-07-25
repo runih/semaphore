@@ -3,7 +3,7 @@
     ref="form"
     lazy-validation
     v-model="formValid"
-    v-if="item != null"
+    v-if="isLoaded()"
   >
     <v-alert
       :value="formError"
@@ -22,6 +22,7 @@
     <v-text-field
       v-model="item.name"
       :label="$t('name')"
+      clearable
       required
       :disabled="formSaving"
       class="mb-4"
@@ -29,17 +30,18 @@
 
     <v-select
       v-model="item.project_id"
-      :label="$t('projectname')"
+      :label="$t('projectName')"
+      clearable
       :items="projects"
       item-value="id"
       item-text="name"
       :disabled="formSaving"
-      class="mb-4"
     ></v-select>
 
     <v-select
+      clearable
       v-model="item.inventory_id"
-      :label="$t('inventoryname')"
+      :label="$t('inventoryName')"
       :items="inventories"
       item-value="id"
       item-text="name"
@@ -49,10 +51,12 @@
 
     <v-text-field
       v-model="item.max_parallel_tasks"
-      :label="$t('max_parallel_tasks')"
+      :label="$t('maxParallelTasks')"
       required
       :disabled="formSaving"
+      type="number"
       class="mb-4"
+      oninput="if(this.value < 1) this.value = 1;"
     ></v-text-field>
 
   </v-form>
@@ -93,6 +97,16 @@ export default {
 
     getSingleItemUrl() {
       return `/api/project/${this.projectId}/runner/${this.itemId}`;
+    },
+
+    isLoaded() {
+      return this.item != null
+        && this.projects != null
+        && this.inventories != null;
+    },
+
+    beforeSave() {
+      this.item.max_parallel_tasks = Number(this.item.max_parallel_tasks);
     },
   },
 };

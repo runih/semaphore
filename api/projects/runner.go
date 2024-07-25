@@ -51,6 +51,8 @@ func GetRunner(w http.ResponseWriter, r *http.Request) {
 func UpdateRunner(w http.ResponseWriter, r *http.Request) {
 	oldRunner := context.Get(r, "runner").(db.Runner)
 
+	project := context.Get(r, "project").(db.Project)
+
 	var runner db.Runner
 
 	if !helpers.Bind(w, r, &runner) {
@@ -71,10 +73,10 @@ func UpdateRunner(w http.ResponseWriter, r *http.Request) {
 
 	helpers.EventLog(r, helpers.EventLogUpdate, helpers.EventLogItem{
 		UserID:      helpers.UserFromContext(r).ID,
-		ProjectID:   *oldRunner.ProjectID,
+		ProjectID:   project.ID,
 		ObjectType:  db.EventRunner,
 		ObjectID:    oldRunner.ID,
-		Description: fmt.Sprintf("Runner %d (%s) updated", runner.ID, *runner.Name),
+		Description: fmt.Sprintf("Runner %d updated", runner.ID),
 	})
 	w.WriteHeader(http.StatusNoContent)
 }

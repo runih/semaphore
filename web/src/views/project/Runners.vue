@@ -1,5 +1,11 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
-  <div v-if="items != null">
+  <div v-if="!isLoaded">
+    <v-progress-linear
+      indeterminate
+      color="primary darken-2"
+    ></v-progress-linear>
+  </div>
+  <div v-else>
     <EditDialog
       v-model="editDialog"
       :save-button-text="$t('save')"
@@ -8,7 +14,7 @@
       @save="loadItems"
     >
       <template v-slot:form="{ onSave, onError, needSave, needReset }">
-        <RunnersForm
+        <RunnerForm
           :project-id="projectId"
           :item-id="itemId"
           @save="onSave"
@@ -28,7 +34,7 @@
 
     <YesNoDialog
       :title="$t('deleteRunners')"
-      :text="$t('askDeleteEnv')"
+      :text="$t('askDeleteRun')"
       v-model="deleteItemDialog"
       @yes="deleteItem(itemId)"
     />
@@ -46,10 +52,10 @@
       class="mt-4"
       :items-per-page="Number.MAX_VALUE"
     >
-      <template v-slot:item.project_name="{ item }">
+      <template v-slot:item.project="{ item }">
         {{ (projects.find((x) => x.id === item.project_id) || {name: '-'}).name }}
       </template>
-      <template v-slot:item.inventory_name="{ item }">
+      <template v-slot:item.inventory="{ item }">
         {{ (inventories.find((x) => x.id === item.inventory_id) || {name: '-'}).name }}
       </template>
       <template v-slot:item.actions="{ item }">
@@ -77,11 +83,11 @@
 </template>
 <script>
 import ItemListPageBase from '@/components/ItemListPageBase';
-import RunnersForm from '@/components/RunnersForm.vue';
+import RunnerForm from '@/components/RunnerForm.vue';
 import axios from 'axios';
 
 export default {
-  components: { RunnersForm },
+  components: { RunnerForm },
   mixins: [ItemListPageBase],
   data() {
     return {
@@ -91,6 +97,13 @@ export default {
   },
   async created() {
     await this.loadData();
+  },
+  computed: {
+    isLoaded() {
+      return this.items
+        && this.inventories
+        && this.projects;
+    },
   },
   methods: {
     getHeaders() {
@@ -104,19 +117,19 @@ export default {
           value: 'name',
         },
         {
-          text: this.$i18n.t('project_name'),
-          value: 'project_name',
+          text: this.$i18n.t('project'),
+          value: 'project',
         },
         {
-          text: this.$i18n.t('inventory_name'),
-          value: 'inventory_name',
+          text: this.$i18n.t('inventory'),
+          value: 'inventory',
         },
         {
           text: this.$i18n.t('webhook'),
           value: 'webhook',
         },
         {
-          text: this.$i18n.t('max_parallel_tasks'),
+          text: this.$i18n.t('maxParallelTasks'),
           value: 'max_parallel_tasks',
         },
         {
