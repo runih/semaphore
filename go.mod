@@ -10,7 +10,6 @@ require (
 	github.com/go-gorp/gorp/v3 v3.1.0
 	github.com/go-ldap/ldap/v3 v3.4.6
 	github.com/go-sql-driver/mysql v1.7.1
-	github.com/golang-jwt/jwt/v4 v4.5.0
 	github.com/google/go-github v17.0.0+incompatible
 	github.com/gorilla/context v1.1.2
 	github.com/gorilla/handlers v1.5.2
@@ -58,7 +57,7 @@ require (
 	github.com/xanzy/ssh-agent v0.3.3 // indirect
 	golang.org/x/mod v0.15.0 // indirect
 	golang.org/x/net v0.23.0 // indirect
-	golang.org/x/sys v0.18.0 // indirect
+	golang.org/x/sys v0.22.0 // indirect
 	golang.org/x/tools v0.18.0 // indirect
 	google.golang.org/appengine v1.6.8 // indirect
 	google.golang.org/protobuf v1.33.0 // indirect

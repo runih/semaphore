@@ -30,6 +30,17 @@ func RunnerMiddleware(next http.Handler) http.Handler {
 	})
 }
 
+func GetRunnerRefs(w http.ResponseWriter, r *http.Request) {
+	// TODO: Maybe there should be a check for any feferences?
+	// runner := context.Get(r, "runner").(db.Runner)
+	// refs, err := helpers.Store(r).GetRunnerRefs(*runner.ProjectID, runner.ID)
+	// if err != nil {
+	//   helpers.WriteError(w, err)
+	//   return
+	// }
+	helpers.WriteJSON(w, http.StatusOK, db.ObjectReferrers{})
+}
+
 func GetRunner(w http.ResponseWriter, r *http.Request) {
 	if runner := context.Get(r, "runner"); runner != nil {
 		helpers.WriteJSON(w, http.StatusOK, runner.(db.Runner))
@@ -83,9 +94,10 @@ func UpdateRunner(w http.ResponseWriter, r *http.Request) {
 
 func RemoveRunner(w http.ResponseWriter, r *http.Request) {
 	runner := context.Get(r, "runner").(db.Runner)
+	project := context.Get(r, "project").(db.Project)
 	var err error
 
-	err = helpers.Store(r).DeleteRunner(*runner.ProjectID, runner.ID)
+	err = helpers.Store(r).DeleteRunner(project.ID, runner.ID)
 	if errors.Is(err, db.ErrInvalidOperation) {
 		helpers.WriteJSON(w, http.StatusBadRequest, map[string]interface{}{
 			"error": "Runner is in use by on or more task",
@@ -101,7 +113,7 @@ func RemoveRunner(w http.ResponseWriter, r *http.Request) {
 
 	helpers.EventLog(r, helpers.EventLogDelete, helpers.EventLogItem{
 		UserID:      helpers.UserFromContext(r).ID,
-		ProjectID:   *runner.ProjectID,
+		ProjectID:   project.ID,
 		ObjectType:  db.EventRunner,
 		ObjectID:    runner.ID,
 		Description: fmt.Sprintf("Runner %d, (%s) deleted", runner.ID, *runner.Name),

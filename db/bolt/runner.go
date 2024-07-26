@@ -17,6 +17,10 @@ func (d *BoltDb) GetRunners(projectID int, params db.RetrieveQueryParams) (runne
 	return
 }
 
+func (d *BoltDb) GetRunnerRefs(projectID int, runnerID int) (db.ObjectReferrers, error) {
+	return d.getObjectRefs(projectID, db.GlobalRunnerProps, runnerID)
+}
+
 func (d *BoltDb) DeleteRunner(projectID int, runnerID int) (err error) {
 	return
 }

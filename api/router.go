@@ -261,6 +261,7 @@ func Route() *mux.Router {
 	projectRunnerManagment.Use(projects.RunnerMiddleware)
 
 	projectRunnerManagment.HandleFunc("/{runner_id}", projects.GetRunner).Methods("GET", "HEAD")
+	projectRunnerManagment.HandleFunc("/{runner_id}/refs", projects.GetRunnerRefs).Methods("GET", "HEAD")
 	projectRunnerManagment.HandleFunc("/{runner_id}", projects.UpdateRunner).Methods("PUT")
 	projectRunnerManagment.HandleFunc("/{runner_id}", projects.RemoveRunner).Methods("DELETE")
 

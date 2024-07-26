@@ -51,6 +51,7 @@ type ObjectReferrers struct {
 	Templates    []ObjectReferrer `json:"templates"`
 	Inventories  []ObjectReferrer `json:"inventories"`
 	Repositories []ObjectReferrer `json:"repositories"`
+	Runners      []ObjectReferrer `json:"runners"`
 }
 
 type IntegrationReferrers struct {
@@ -254,6 +255,7 @@ type Store interface {
 	SetViewPositions(projectID int, viewPositions map[int]int) error
 
 	GetRunner(projectID int, runnerID int) (Runner, error)
+	GetRunnerRefs(projectID int, runnerID int) (ObjectReferrers, error)
 	GetAllRunners() ([]Runner, error)
 	GetRunners(projectID int, params RetrieveQueryParams) ([]Runner, error)
 	DeleteRunner(projectID int, runnerID int) error

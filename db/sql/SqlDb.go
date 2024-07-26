@@ -373,6 +373,11 @@ func (d *SqlDb) getObjectRefs(projectID int, objectProps db.ObjectProps, objectI
 		return
 	}
 
+	refs.Runners, err = d.getObjectRefsFrom(projectID, objectProps, objectID, db.GlobalRunnerProps)
+	if err != nil {
+		return
+	}
+
 	return
 }
 
@@ -425,6 +430,10 @@ func (d *SqlDb) getObjectRefsFrom(
 		referringObjects = reflect.New(reflect.SliceOf(db.TemplateProps.Type))
 		_, err = d.selectAll(referringObjects.Interface(),
 			"select id, name from project__template where id in ("+strings.Join(ids, ",")+")")
+	} else if referringObjectProps.Type == db.GlobalRunnerProps.Type {
+		referringObjects = reflect.New(reflect.SliceOf(db.TemplateProps.Type))
+		_, err = d.selectAll(referringObjects.Interface(),
+			"select id, coalesce(name, '') AS name from runner where "+cond, objectID)
 	} else {
 		referringObjects = reflect.New(reflect.SliceOf(referringObjectProps.Type))
 		_, err = d.selectAll(

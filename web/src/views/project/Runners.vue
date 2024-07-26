@@ -26,14 +26,14 @@
     </EditDialog>
 
     <ObjectRefsDialog
-      object-title="runners"
+      object-title="runner"
       :object-refs="itemRefs"
       :project-id="projectId"
       v-model="itemRefsDialog"
     />
 
     <YesNoDialog
-      :title="$t('deleteRunners')"
+      :title="$t('deleteRunner')"
       :text="$t('askDeleteRun')"
       v-model="deleteItemDialog"
       @yes="deleteItem(itemId)"
@@ -143,7 +143,7 @@ export default {
       return `/api/project/${this.projectId}/runner`;
     },
     getSingleItemUrl() {
-      return `/api/project/${this.projectId}/runners/${this.itemId}`;
+      return `/api/project/${this.projectId}/runner/${this.itemId}`;
     },
     getEventName() {
       return 'i-runners';

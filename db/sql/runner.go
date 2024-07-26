@@ -24,6 +24,10 @@ func (d *SqlDb) GetAllRunners() (runners []db.Runner, err error) {
 	return
 }
 
+func (d *SqlDb) GetRunnerRefs(projectID int, runnerID int) (db.ObjectReferrers, error) {
+	return d.getObjectRefs(projectID, db.GlobalRunnerProps, runnerID)
+}
+
 func (d *SqlDb) GetRunner(projectID int, runnerID int) (runner db.Runner, err error) {
 	query, args, err := squirrel.Select("r.*, p.name as project_name, i.name as inventory_name").
 		From("runner as r").
